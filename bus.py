@@ -11,10 +11,24 @@ def gachon_bus(busNo):
     response = requests.get(url, params=params)
     response_dic = eval(response.text)
     localStationID = response_dic['result']['station'][0]['localStationID']
-
-    for i in range(len(response_dic['result']['station'][0]['businfo'])):
-        if response_dic['result']['station'][0]['businfo'][i]['busNo'] == busNo:
-            busLocalBlID = response_dic['result']['station'][0]['businfo'][i]['busLocalBlID']
+    gachon_uni_Bus_Info = {
+        "1312": "241006200",
+        "1309": "241006190",
+        "3000": "227000038",
+        "8401": "234001426",
+        "1650": "234000050",
+        "1112": "234000016",
+        "8109": "234001236",
+        "8409": "234001246",
+        "1801": "241000830",
+        "8147": "241000820",
+        "8153": "241000840",
+        "G2100": "230000179",
+        "G6009": "233000322",
+    }
+    for i in gachon_uni_Bus_Info:
+        if i == busNo:
+            busLocalBlID = gachon_uni_Bus_Info[i]
             break
 
     gc_bus_url = "http://apis.data.go.kr/6410000/busarrivalservice/getBusArrivalList"
