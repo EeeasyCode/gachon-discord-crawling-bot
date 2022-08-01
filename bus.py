@@ -12,12 +12,12 @@ def gachon_bus(busNo):
     response_dic = eval(response.text)
     localStationID = response_dic['result']['station'][0]['localStationID']
     gachon_uni_Bus_Info = {
-        "1312": "241006200",
-        "1309": "241006190",
-        "3000": "227000038",
-        "8401": "234001426",
-        "1650": "234000050",
-        "1112": "234000016",
+        "1312": ["241006200", "천안 | 동서울터미널 <-> 아산시외버스터미널"],
+        "1309": ["241006190", "천안 | 동서울터미널 <-> 천안총합터미널"],
+        "3000": ["227000038", "하남 | 미사강변호반써밋 <-> 금토천교"],
+        "8401": ["234001426", "의정부 | 낙양동공영차고지 <-> 수원역.노보텔수원"],
+        "1650": ["234000050", "구리 | 구리수택차고지 <-> 안양역"],
+        "1112": ["234000016", "창현마을.수원신갈IC 방면", "수원 | 경희대차고지 <-> 테크노마트앞.강변역(C)"],
         "8109": "234001236",
         "8409": "234001246",
         "1801": "241000830",
@@ -26,9 +26,12 @@ def gachon_bus(busNo):
         "G2100": "230000179",
         "G6009": "233000322",
     }
+
     for i in gachon_uni_Bus_Info:
         if i == busNo:
-            busLocalBlID = gachon_uni_Bus_Info[i]
+            busLocalBlID = gachon_uni_Bus_Info[i][0]
+            busLocation = gachon_uni_Bus_Info[i][1]
+            busEndStart = gachon_uni_Bus_Info[i][2]
             break
 
     gc_bus_url = "http://apis.data.go.kr/6410000/busarrivalservice/getBusArrivalList"
@@ -47,4 +50,4 @@ def gachon_bus(busNo):
             predictTime2 = json.loads(json.dumps(busKey['predictTime2'], ensure_ascii=False))
             remainSeatCnt1 = json.loads(json.dumps(busKey['remainSeatCnt1'], ensure_ascii=False))
             remainSeatCnt2 = json.loads(json.dumps(busKey['remainSeatCnt2'], ensure_ascii=False))
-            return busNo, localtionNo1, localtionNo2, predictTime1, predictTime2, remainSeatCnt1, remainSeatCnt2
+            return busNo, busLocation, busEndStart, localtionNo1, localtionNo2, predictTime1, predictTime2, remainSeatCnt1, remainSeatCnt2
