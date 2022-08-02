@@ -49,26 +49,34 @@ async def subway(ctx, way):
 
 
 @app.command(name="버스")
-async def busInfo(ctx, busNo):
+async def busInfo(ctx, stationName):
     busNo, busEndStart, busLocation, locationNo1, locationNo2, predictTime1, predictTime2, remainSeatCnt1, remainSeatCnt2 = bus.gachon_bus(
-        busNo)
-    embed = discord.Embed(title="가천대 버스 도착 정보", description='05088 성남TG(경유) 방면')
-    embed.add_field(name=busNo + " " + busLocation, value='------------------------------', inline=False)
-    embed.add_field(name='경유정보', value=busEndStart, inline=False)
-    embed.add_field(name='첫번째', value=predictTime1 + '분 ' + locationNo1 + '정류장/' + remainSeatCnt1 + '석')
-    if predictTime2 is None or locationNo2 is None or remainSeatCnt2 is None:
-        embed.add_field(name='두번째', value="배차정보가 없습니다.")
-    else:
-        embed.add_field(name='두번째', value=predictTime2 + '분 ' + locationNo2 + '정류장/' + remainSeatCnt2 + '석')
-    await ctx.send(embed=embed)
+        stationName)
+
+    for i in range(0, 13):
+        embed = discord.Embed(title="가천대 버스 도착 정보", description=stationName)
+        embed.add_field(name=busNo[i] + " " + busLocation[i][0], value='------------------------------', inline=False)
+        embed.add_field(name='경유정보', value=busEndStart[i], inline=False)
+        if predictTime1[i] is None or locationNo1[i] is None or remainSeatCnt1[i] is None:
+            embed.add_field(name='첫번째', value='배차정보가 없습니다')
+        else:
+            embed.add_field(name='첫번째',
+                            value=predictTime1[i] + '분 ' + locationNo1[i] + '정류장/' + remainSeatCnt1[i] + '석')
+        if predictTime2[i] is None or locationNo2[i] is None or remainSeatCnt2[i] is None:
+            embed.add_field(name='두번째', value="배차정보가 없습니다.")
+        else:
+            embed.add_field(name='두번째',
+                            value=predictTime2[i] + '분 ' + locationNo2[i] + '정류장/' + remainSeatCnt2[i] + '석')
+        await ctx.send(embed=embed)
 
 
 app.run(config.DISCORD_CONFIG['token'])
 
-# seoul_bus_url = "http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid"
-# seoul_bus_params = {
-#     'serviceKey': config.BUS_CONFIG['service-key'],
-#     'arsId': arsID
-# }
-# seoul_bus_response = requests.get(seoul_bus_url, params=seoul_bus_params)
-# print(seoul_bus_response.text)
+# # seoul_bus_url = "http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid"
+# # seoul_bus_params = {
+# #     'serviceKey': config.BUS_CONFIG['service-key'],
+# #     'arsId': arsID
+# # }
+# # seoul_bus_response = requests.get(seoul_bus_url, params=seoul_bus_params)
+# # print(seoul_bus_response.text)
+
