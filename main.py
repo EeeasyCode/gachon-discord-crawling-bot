@@ -1,6 +1,5 @@
 import crawling.get_notice
-import sub
-import bus
+from apis import bus, sub
 from crawling import academic_calender
 import discord
 from discord.ext import commands
